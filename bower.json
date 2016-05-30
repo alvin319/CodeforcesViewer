@@ -1,0 +1,21 @@
+{
+  "name": "CodeforcesViewer",
+  "homepage": "https://github.com/alvin319/CodeforcesViewer",
+  "authors": [
+    "Alvin Deng <alvin.q.deng@utexas.edu>"
+  ],
+  "description": "A web viewer for Codeforces profile",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.4",
+    "bootstrap": "^3.3.6"
+  }
+}
