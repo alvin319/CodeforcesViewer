@@ -37,7 +37,7 @@ $(document).ready(function() {
 });
 
 function addButtonHREF(current) {
-	return '<a class="waves-effect waves-light btn" href="' + current + '">' + 'Click Here' + '</a>';
+	return '<a class="grey darken-1 white-text btn waves-effect waves-green" href="' + current + '">' + 'Click Here' + '</a>';
 }
 
 function addTD(current) {
@@ -61,6 +61,7 @@ function formatTags(array) {
 
 function parseResponse(response) {
 	var problemURL = 'http://codeforces.com/problemset/problem/'
+
 	var data = response.result;
 	for (var i = 0; i < data.length; i++) {
 		if(data[i].verdict === 'OK') {
@@ -69,9 +70,10 @@ function parseResponse(response) {
 			var problemName = contestID + contestIndex + " " + data[i].problem.name;
 			var creationTime = data[i].creationTimeSeconds;
 			var language = data[i].programmingLanguage;
-			var problemTag = data[i].problem.tags;
-			problemTag = formatTags(problemTag);
+			var problemTag = formatTags(data[i].problem.tags);
 			var contestURL = problemURL + contestID + '/' + contestIndex;
+			var submissionURL = 'http://codeforces.com/contest/' + contestID + '/submission/' + data[i].id;
+			var performanceTime = data[i].timeConsumedMillis + 'ms';
 
 			var dateObject = new Date(0);
 			dateObject.setUTCSeconds(creationTime);
@@ -82,7 +84,9 @@ function parseResponse(response) {
 			$('#table-data').append(addTD(problemName));
 			$('#table-data').append(addTD(problemTag));
 			$('#table-data').append(addTD(language));
+			$('#table-data').append(addTD(performanceTime));
 			$('#table-data').append(addTD(addButtonHREF(contestURL)));
+			$('#table-data').append(addTD(addButtonHREF(submissionURL)));
 			$('#table-data').append('</tr>');
 		}
 	}
