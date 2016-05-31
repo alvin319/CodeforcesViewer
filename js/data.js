@@ -40,6 +40,10 @@ function addButtonHREF(current) {
 	return '<a class="grey darken-1 white-text btn waves-effect waves-green" href="' + current + '">' + 'Click Here' + '</a>';
 }
 
+function addDisabledButtonHREF() {
+	return '<a class="grey darken-1 white-text btn disabled">' + 'N/A' + '</a>';
+}
+
 function addTD(current) {
 	return '<td>' + current + '</td>';
 }
@@ -85,8 +89,13 @@ function parseResponse(response) {
 			$('#table-data').append(addTD(problemTag));
 			$('#table-data').append(addTD(language));
 			$('#table-data').append(addTD(performanceTime));
-			$('#table-data').append(addTD(addButtonHREF(contestURL)));
-			$('#table-data').append(addTD(addButtonHREF(submissionURL)));
+			if(data[i].contestId >= 100000) /* Gym */ {
+				$('#table-data').append(addTD(addDisabledButtonHREF()));
+				$('#table-data').append(addTD(addDisabledButtonHREF()));
+			} else {
+				$('#table-data').append(addTD(addButtonHREF(contestURL)));
+				$('#table-data').append(addTD(addButtonHREF(submissionURL)));
+			}
 			$('#table-data').append('</tr>');
 		}
 	}
