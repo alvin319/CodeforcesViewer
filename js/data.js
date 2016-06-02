@@ -36,16 +36,28 @@ $(document).ready(function() {
 	});	
 });
 
-function addButtonHREF(current) {
+function addButton(current) {
 	return '<a class="grey darken-1 white-text btn waves-effect waves-green" href="' + current + '">' + 'Click Here' + '</a>';
 }
 
-function addDisabledButtonHREF() {
+function addDisabledButton() {
 	return '<a class="grey darken-1 white-text btn disabled">' + 'N/A' + '</a>';
 }
 
 function addTD(current) {
 	return '<td>' + current + '</td>';
+}
+
+function addTableHeader() {
+	$('#table-data').append('<tr>');
+}
+
+function addTableFooter() {
+	$('#table-data').append('</tr>');
+}
+
+function addTableColumn(data) {
+	$('#table-data').append(addTD(data));
 }
 
 function formatTags(array) {
@@ -64,7 +76,8 @@ function formatTags(array) {
 }
 
 function parseResponse(response) {
-	var problemURL = 'http://codeforces.com/problemset/problem/'
+	var problemHeader = 'http://codeforces.com/problemset/problem/'
+	var gymHeader = 'http://codeforces.com/gym/'
 
 	var data = response.result;
 	for (var i = 0; i < data.length; i++) {
@@ -75,7 +88,7 @@ function parseResponse(response) {
 			var creationTime = data[i].creationTimeSeconds;
 			var language = data[i].programmingLanguage;
 			var problemTag = formatTags(data[i].problem.tags);
-			var contestURL = problemURL + contestID + '/' + contestIndex;
+			var contestURL = problemHeader + contestID + '/' + contestIndex;
 			var submissionURL = 'http://codeforces.com/contest/' + contestID + '/submission/' + data[i].id;
 			var performanceTime = data[i].timeConsumedMillis + 'ms';
 
@@ -83,20 +96,21 @@ function parseResponse(response) {
 			dateObject.setUTCSeconds(creationTime);
 			var date = (dateObject.getMonth() + 1) + '/' + dateObject.getDate() + '/' + dateObject.getFullYear();
 
-			$('#table-data').append('<tr>');
-			$('#table-data').append(addTD(date));
-			$('#table-data').append(addTD(problemName));
-			$('#table-data').append(addTD(problemTag));
-			$('#table-data').append(addTD(language));
-			$('#table-data').append(addTD(performanceTime));
+			addTableHeader();
+			addTableColumn(date);
+			addTableColumn(problemName);
+			addTableColumn(problemTag);
+			addTableColumn(language);
+			addTableColumn(performanceTime);
 			if(data[i].contestId >= 100000) /* Gym */ {
-				$('#table-data').append(addTD(addDisabledButtonHREF()));
-				$('#table-data').append(addTD(addDisabledButtonHREF()));
+				var gymURL = gymHeader + contestID;
+				addTableColumn(addButton(gymURL));
+				addTableColumn(addDisabledButton());
 			} else {
-				$('#table-data').append(addTD(addButtonHREF(contestURL)));
-				$('#table-data').append(addTD(addButtonHREF(submissionURL)));
+				addTableColumn(addButton(contestURL));
+				addTableColumn(addButton(submissionURL));
 			}
-			$('#table-data').append('</tr>');
+			addTableFooter();
 		}
 	}
 	$('#table').show();
